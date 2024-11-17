@@ -6,7 +6,7 @@ export default function Nav() {
     const nav = useNavigate();
   return (
     <div className='navbar'>
-      <img src={logo} width={180} height={80} onClick={()=>nav("/")}/>
+      <img src={logo} onClick={()=>nav("/")}/>
       <div className='navitems'>
         <h2 onClick={()=>nav("/login")}>Login</h2>
       </div>
