@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 
 import { createClient } from "@supabase/supabase-js";
+import router from "./routes/uservalidation.js";
 
 const supabaseUrl = "https://ybnkyixugojfqjlssrvi.supabase.co";
 const supabaseKey =
@@ -29,20 +30,7 @@ app.use((req, res, next) => {
   next();
 });
 
-
-async function fetchData() {
-    const { data, error } = await supabase
-      .from("hello")
-      .select("*");
-  
-    if (error) {
-      console.error("Error:", error);
-    } else {
-      console.log("Fetched data:", data);
-    }
-  }
-  
-  fetchData();
+app.use("/api/",router);
 app.get("/", (req, res) => {
   res.send("<h1>Hello,I am Server</h1>");
 });

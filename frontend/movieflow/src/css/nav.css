@@ -105,12 +105,13 @@
     height:40px;
     color: #FFD700;
     background-color: transparent;
-    border: 2px solid #FFD700;
+    border: 0px solid #FFD700;
+    border-bottom: 4px solid #FFD700;
     font-size: 25px;
 }
 .Form>input:focus{
     border: 0px solid #FFD700;
-    border-bottom: 4px solid #FFD700;
+    border-bottom: 4px solid #C1272D;
 }
 
 .Form>button{
