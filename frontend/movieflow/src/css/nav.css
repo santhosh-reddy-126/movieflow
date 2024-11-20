@@ -113,7 +113,9 @@
     border: 0px solid #FFD700;
     border-bottom: 4px solid #C1272D;
 }
-
+.Form>h2{
+    color: #FFD700;
+}
 .Form>button{
     width: 65%;
     height: 40px;

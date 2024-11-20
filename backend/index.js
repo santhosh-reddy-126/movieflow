@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-
+import bcrypt from "bcryptjs";
 import { createClient } from "@supabase/supabase-js";
 import router from "./routes/uservalidation.js";
 
@@ -30,10 +30,14 @@ app.use((req, res, next) => {
   next();
 });
 
+
+
 app.use("/api/",router);
 app.get("/", (req, res) => {
   res.send("<h1>Hello,I am Server</h1>");
 });
+
+
 app.listen(port, () => {
   console.log("Server Running on port " + port);
 });
