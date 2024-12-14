@@ -8,6 +8,14 @@ const supabaseKey =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlibmt5aXh1Z29qZnFqbHNzcnZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzE2ODQ5NjMsImV4cCI6MjA0NzI2MDk2M30._mqawcOHTawwkQFiPn_l4YtU3CsykFvhB4JwdxV1dCk";
 const supabase = createClient(supabaseUrl, supabaseKey);
 
+
+const options = {
+  method: 'GET',
+  headers: {
+    accept: 'application/json',
+    Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5MTcyYWVkNzU5YTA4Yzg3NzkzM2FlMzMxYmZjZTNkMiIsIm5iZiI6MTczMTEyMzMwNS43MDUsInN1YiI6IjY3MmVkODY5OWZkZGU4YzRiODhiY2E4NyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.gWrxgrIbl2zG3D4Xd3Ea_VTPrmW4BW5RRe4tZtu2AKg'
+  }
+  };
 router.post("/login", async (req, res) => {
   try {
     const { data, error } = await supabase
@@ -76,4 +84,21 @@ router.post("/signup", async (req, res) => {
   }
 });
 
+
+router.post("/getMovie", async(req,res)=>{
+  try{
+    let data={};
+    const url = `https://api.themoviedb.org/3/search/movie?query=${req.body.search}&include_adult=false&language=en-US&page=1`;
+    const response = await fetch(url, options);
+    data = await response.json();
+
+    if(Object.keys(data).length != 0){
+      res.send({success: true,data: data});
+    }else{
+      res.send({success: false,message: "Sorry,Unable to Find Your Movie"});
+    }
+  }catch(e){
+    console.log(e);
+  }
+})
 export default router;

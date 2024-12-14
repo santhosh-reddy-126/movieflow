@@ -1,0 +1,93 @@
+body{
+    background-color: #2E2E2E;
+}
+
+
+input{
+    width: 100%;
+    background-color: #454545;
+    border: 0px;
+    height: 40px;
+    border-radius: 20px;
+    color: #FFD700;
+    font-size: 20px;
+    padding: 5px;
+}
+
+.inps{
+    position: relative;
+    width: 400px;
+    margin-top: 20px;
+}
+
+
+.movie{
+    margin: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: start;
+    flex-wrap: wrap;
+    gap: 35px;
+}
+
+#poster{
+    width: 170px;
+    height: 240px;
+    border-radius: 5px;
+}
+
+.MovieUnit{
+    position: relative;
+    width: 170px;
+    height: 240px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.MovieUnit:hover #poster{
+    filter: brightness(30%);
+}
+.MovieUnit:hover .details{
+    opacity: 1;
+    transition: opacity 1.5s ease;
+}
+
+.genres{
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.details{
+    position: absolute;
+    bottom: 5px;
+    left: 10px;
+    color: #FFD700;
+    z-index: 3;
+    opacity: 0;
+}
+#genreUnit{
+    border: 0;
+    padding: 3px;
+    margin: 0;
+    font-size: 16px;
+    background: #FFD700;
+    color: #2E2E2E;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+
+input:focus{
+    outline: none;
+}
+
+button{
+    width: 100px;
+    height: 40px;
+    border-radius: 20px;
+    position: absolute;
+    left: 75%;
+    top: 5px;
+    background: radial-gradient(#FFD700,white);
+}

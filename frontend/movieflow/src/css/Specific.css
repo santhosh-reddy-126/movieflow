@@ -1,0 +1,35 @@
+.head{
+    padding: 20px;
+    background-color: #3b3b3b;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    gap: 20px;
+    background-color: rgb(50,50,50,0.7);
+}
+
+#genreUnit{
+    border: 0;
+    padding: 3px;
+    margin: 0;
+    font-size: 20px;
+    background: #FFD700;
+    color: #2E2E2E;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.genres{
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.head>img{
+    width: 200px;
+    height: 300px;
+}
+
+.head>.det{
+    color: #FFD700;
+}
