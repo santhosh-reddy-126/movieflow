@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import {useNavigate} from "react-router-dom";
 import "../css/Dash.css"
 import img from "../image/mvbg.jpg";
+
+  
+
 export default function Movie(props) {
     const nav=useNavigate();
     const [load,setload]=useState(false);
@@ -27,11 +30,12 @@ export default function Movie(props) {
         37: 'Western'
     };
   return (
-    <div className='MovieUnit' onClick={()=> nav("/movie/"+props.id,{state:props.datas})}>
+    <div className='MovieUnit' onClick={()=> nav("/movie/"+props.id,{state:{id: props.id}})}>
         <img id="poster" onLoad={()=> setload(true)} src={props.link==="none" ? img:load ? props.link:img}></img>
         <div className='details'>
             <h4>{props.name}</h4>
             <h5>{new Date(props.year).getFullYear() ? new Date(props.year).getFullYear():""}</h5>
+            
             <div className='genres'>
                 {props.genre ? props.genre.map(items => <p id="genreUnit">{genreMap[items] || "Unknown"}</p>):""}
             </div>

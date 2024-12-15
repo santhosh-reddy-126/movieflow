@@ -82,7 +82,7 @@ input:focus{
     outline: none;
 }
 
-button{
+#btn{
     width: 100px;
     height: 40px;
     border-radius: 20px;
@@ -91,3 +91,4 @@ button{
     top: 5px;
     background: radial-gradient(#FFD700,white);
 }
+

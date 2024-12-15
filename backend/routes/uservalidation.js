@@ -101,4 +101,21 @@ router.post("/getMovie", async(req,res)=>{
     console.log(e);
   }
 })
+
+
+router.post("/getSpecific", async(req,res)=>{
+  try{
+    let data={};
+    const url = `https://api.themoviedb.org/3/movie/${req.body.id}?language=en-US`;
+    const response = await fetch(url, options);
+    data = await response.json();
+    if(Object.keys(data).length != 0){
+      res.send({success: true,data: data});
+    }else{
+      res.send({success: false,message: "Sorry,Unable to Find Your Movie"});
+    }
+  }catch(e){
+    console.log(e);
+  }
+})
 export default router;

@@ -38,12 +38,12 @@ export default function Dash() {
     <div>
         <div className='inps'>
             <input type='text' placeholder='Search any Movie...' value={txt} onChange={changeSearch}></input>
-            <button onClick={sendData}>🔍 Search</button>
+            <button id="btn" onClick={sendData}>🔍 Search</button>
         </div>
         <div className='movie'>
 
             {data.results ? 
-            data.results.map(item => <Movie link={item.poster_path!=null ? `https://image.tmdb.org/t/p/original${item.poster_path}`:"none"} name={item.title} year={item.release_date} genre={item.genre_ids} id={item.id} datas={item}/>)
+            data.results.map(item => <Movie link={item.poster_path!=null ? `https://image.tmdb.org/t/p/original${item.poster_path}`:"none"} name={item.title} year={item.release_date} genre={item.genre_ids} id={item.id}/>)
             :""}
         </div>
         
