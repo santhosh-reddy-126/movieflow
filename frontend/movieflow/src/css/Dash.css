@@ -3,7 +3,7 @@ body{
 }
 
 
-input{
+#search1{
     width: 100%;
     background-color: #454545;
     border: 0px;
@@ -25,7 +25,7 @@ input{
     margin: 20px;
     display: flex;
     flex-direction: row;
-    justify-content: start;
+    justify-content: center;
     align-items: start;
     flex-wrap: wrap;
     gap: 35px;

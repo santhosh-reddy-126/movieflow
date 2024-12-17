@@ -38,6 +38,7 @@ export default function Login() {
       const resp = await data1.json();
       if(resp.success){
         setmsg("");
+        localStorage.setItem("email",data.email);
         nav("/home");// if we get success as true from backend, we can move on to home page
         setdata({
           email: "",
@@ -69,6 +70,7 @@ export default function Login() {
       const resp = await data1.json();
       if(resp.success){
         setmsg("");
+        localStorage.setItem("email",data.email);
         nav("/home");// if we get success as true from backend, we can move on to home page
         setdata({
           email: "",

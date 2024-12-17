@@ -3,10 +3,14 @@ const router = express.Router();
 import bcrypt from "bcryptjs";
 import { createClient } from "@supabase/supabase-js";
 
+
+
 const supabaseUrl = "https://ybnkyixugojfqjlssrvi.supabase.co";
 const supabaseKey =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlibmt5aXh1Z29qZnFqbHNzcnZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzE2ODQ5NjMsImV4cCI6MjA0NzI2MDk2M30._mqawcOHTawwkQFiPn_l4YtU3CsykFvhB4JwdxV1dCk";
 const supabase = createClient(supabaseUrl, supabaseKey);
+
+
 
 
 const options = {
@@ -18,6 +22,7 @@ const options = {
   };
 router.post("/login", async (req, res) => {
   try {
+
     const { data, error } = await supabase
       .from("users")
       .select("password")
@@ -43,7 +48,6 @@ router.post("/login", async (req, res) => {
 async function checkUser(a){// checks whether an email exists in
     try {
       const { data, error } = await supabase.from("users").select("*").eq("email",a);
-      console.log(data.length);
       if(data.length>0){
         return true;
       }else{
@@ -74,6 +78,7 @@ router.post("/signup", async (req, res) => {
       if (error) {
         throw error;
       }
+      
       res.send({ success: true });
     } catch (e) {
       console.log("Error logging in: ", e);
@@ -105,17 +110,53 @@ router.post("/getMovie", async(req,res)=>{
 
 router.post("/getSpecific", async(req,res)=>{
   try{
-    let data={};
+    let datas={};
     const url = `https://api.themoviedb.org/3/movie/${req.body.id}?language=en-US`;
     const response = await fetch(url, options);
-    data = await response.json();
-    if(Object.keys(data).length != 0){
-      res.send({success: true,data: data});
+    datas = await response.json();
+    const {data,error} = await supabase.from("Ratings").select("*").eq("movie_id",req.body.id);
+    let avg = 0,ans=-1;
+    for(let i=0;i<data.length;i++){
+      avg = avg + data[i].Rating;
+      if(data[i].email===req.body.email){
+        ans=data[i].Rating;
+      }
+    }
+    
+    if(error){
+      throw error;
+    }
+    let status = -1; 
+    if(ans!=-1){
+      status=ans;
+    }
+    if(Object.keys(datas).length != 0){
+      res.send({success: true,data: datas,status: status,avg: avg/data.length,length: data.length});
     }else{
       res.send({success: false,message: "Sorry,Unable to Find Your Movie"});
     }
   }catch(e){
     console.log(e);
+  }
+})
+
+
+router.post("/sendRating", async(req,res)=>{
+  try{
+    const {data,error} = await supabase.from("Ratings").insert([
+      {
+        email: req.body.email,
+        movie_id: req.body.id,
+        Rating: req.body.rating
+      }
+    ])
+    if(error){
+      throw error;
+    }
+    res.send({success: true});
+  }catch(e){
+    console.log(e);
+    res.send({success: false});
   }
 })
 export default router;

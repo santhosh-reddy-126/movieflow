@@ -37,7 +37,7 @@ export default function Dash() {
   return (
     <div>
         <div className='inps'>
-            <input type='text' placeholder='Search any Movie...' value={txt} onChange={changeSearch}></input>
+            <input id="search1" type='text' placeholder='Search any Movie...' value={txt} onChange={changeSearch}></input>
             <button id="btn" onClick={sendData}>🔍 Search</button>
         </div>
         <div className='movie'>

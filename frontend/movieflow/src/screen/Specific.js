@@ -5,6 +5,10 @@ import "../css/Specific.css";
 const blink = "http://localhost:3144";
 export default function Specific() {
   const location = useLocation();
+  const [isRated, setRatingStatus] = useState(-1);
+  const [avgRating,setAvg]=useState(0.00);
+  const [leng,setlen]=useState(0);
+  const [Ratingmsg,setmsg] = useState("");
   const id = location.state.id || 0;
   const [item, setItem] = useState({});
   const getMovie = async () => {
@@ -16,14 +20,51 @@ export default function Specific() {
         },
         body: JSON.stringify({
           id: id,
+          email: localStorage.getItem("email")
         }),
       });
       const resp = await data1.json();
 
       if (resp.success) {
         setItem(resp.data);
+        console.log(resp.status);
+        setRatingStatus(resp.status==-1 ? -1:resp.status);
+        setAvg(resp.avg);
+        setlen(resp.length);
       } else {
         alert(resp.message);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const sendRating = async (k) => {
+    try {
+      if (isRated==-1) {
+        const data = await fetch(blink + "/api/sendRating", {
+          //setting the rating for this movie we send id and rating to backend
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: id,
+            rating: k,
+            email: localStorage.getItem("email")
+          }),
+        });
+        const resp = await data.json();
+        if (resp.success) {
+          setRatingStatus(k);
+          console.log(avgRating,leng);
+          setAvg(((avgRating*leng)+k)/(leng+1));
+          setmsg("You rated "+k+" ⭐");
+        } else {
+          setmsg("Sorry,Unable to rate");
+        }
+      }else{
+        setmsg("Already Rated "+isRated+" ⭐");
       }
     } catch (e) {
       console.log(e);
@@ -185,74 +226,114 @@ export default function Specific() {
     <div>
       {Object.keys(item).length != 0 ? (
         <div
+          id="back"
           style={{
             background: `url(https://image.tmdb.org/t/p/original${item.backdrop_path})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
+            backgroundRepeat: "repeat-y",
             width: "100%",
-            height: "100vh",
           }}
         >
           <div className="head">
-            <div>
-            <img
-              src={
-                item.poster_path
-                  ? "https://image.tmdb.org/t/p/original" + item.poster_path
-                  : img
-              }
-            />
-            <div className="det">
-              <h1>{item.title}({new Date(item.release_date).getFullYear()
-                  ? new Date(item.release_date).getFullYear()
-                  : ""})</h1>
-              <h2>{languageMap[item.original_language]}</h2>
-              <h2>{countryMap[item.origin_country[0]]}</h2>
-              <h2>
-                {Math.floor(item.runtime / 60)}hr {item.runtime % 60}min
-              </h2>
-              <div className="genres">
-                {item.genres
-                  ? item.genres.map((items) => (
-                      <p id="genreUnit">{items.name || "Unknown"}</p>
-                    ))
-                  : ""}
+            <div className="poster">
+              <img
+                src={
+                  item.poster_path
+                    ? "https://image.tmdb.org/t/p/original" + item.poster_path
+                    : img
+                }
+              />
+              <div className="det">
+                <h1>
+                  {item.title}(
+                  {new Date(item.release_date).getFullYear()
+                    ? new Date(item.release_date).getFullYear()
+                    : ""}
+                  )
+                </h1>
+                <h2>{languageMap[item.original_language]}</h2>
+                <h2>{countryMap[item.origin_country[0]]}</h2>
+                <h2>
+                  {Math.floor(item.runtime / 60)}hr {item.runtime % 60}min
+                </h2>
+                <div className="genres">
+                  {item.genres
+                    ? item.genres.map((items) => (
+                        <p id="genreUnit">{items.name || "Unknown"}</p>
+                      ))
+                    : ""}
+                </div>
               </div>
             </div>
-            </div>
-            <div className='prod'>
-                {item.production_companies.slice(0,2).map(k => <div>
-                  <img id="prod_img" src={k.logo_path ? "https://image.tmdb.org/t/p/original"+k.logo_path:img} />
+            <div className="prod">
+              {item.production_companies.slice(0, 2).map((k) => (
+                <div>
+                  <img
+                    class="prod_img"
+                    src={
+                      k.logo_path
+                        ? "https://image.tmdb.org/t/p/original" + k.logo_path
+                        : img
+                    }
+                  />
                   <p>{k.name}</p>
-                </div>)}
-              </div>
+                </div>
+              ))}
+            </div>
           </div>
           <div className="body">
             <div className="Story">
               <p>{item.overview}</p>
             </div>
-            
-            
-            <div className='info'>
-                <p><span>Release Date</span><br/>{new Date(item.release_date).getDate()} {new Date(item.release_date).toLocaleString('en-US', { month: 'short' })},{new Date(item.release_date).getFullYear()}</p>
-                <p><span>Budget</span><br/>${(item.budget/1000000).toFixed(1)}M</p>
-                <p><span>Revenue</span><br/>${(item.revenue/1000000).toFixed(1)}M</p>
-                <p><span>TMDB Rating</span><br/>{item.vote_average}({item.vote_count} Ratings)</p>
-              </div>
 
-              <div className='rate'>
-                <h1>Rate</h1>
-                <div>
-                  <button className="btn1">1 ⭐</button>
-                <button className="btn1">2 ⭐</button>
-                <button className="btn1">3 ⭐</button>
-                <button className="btn1">4 ⭐</button>
-                <button className="btn1">5 ⭐</button>
-                </div>
-                
-                <p>0 ⭐</p>
+            <div className="info">
+              <p>
+                <span>Release Date</span>
+                <br />
+                {new Date(item.release_date).getDate()}{" "}
+                {new Date(item.release_date).toLocaleString("en-US", {
+                  month: "short",
+                })}
+                ,{new Date(item.release_date).getFullYear()}
+              </p>
+              <p>
+                <span>Budget</span>
+                <br />${(item.budget / 1000000).toFixed(1)}M
+              </p>
+              <p>
+                <span>Revenue</span>
+                <br />${(item.revenue / 1000000).toFixed(1)}M
+              </p>
+              <p>
+                <span>TMDB Rating</span>
+                <br />
+                {item.vote_average}({item.vote_count} Ratings)
+              </p>
+            </div>
+
+            <div className="rate">
+              <h1>Rate</h1>
+              <div>
+                <button className="btn1" onClick={() => sendRating(1)} >
+                  1 ⭐
+                </button>
+                <button className="btn1" onClick={() => sendRating(2)} >
+                  2 ⭐
+                </button>
+                <button className="btn1" onClick={() => sendRating(3)} >
+                  3 ⭐
+                </button>
+                <button className="btn1" onClick={() => sendRating(4)} >
+                  4 ⭐
+                </button>
+                <button className="btn1" onClick={() => sendRating(5)} >
+                  5 ⭐
+                </button>
               </div>
+                <h2>{Ratingmsg}</h2>
+              <p>{avgRating ? avgRating.toFixed(2):0.00} ⭐</p>
+            </div>
           </div>
         </div>
       ) : (
