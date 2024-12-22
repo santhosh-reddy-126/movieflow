@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import "../css/Dash.css"
 
 import Movie from '../components/Movie';
@@ -6,6 +7,7 @@ const blink = "http://localhost:3144"
 
 export default function Dash() {
     const [txt,settxt]=useState("");
+    const nav = useNavigate();
     const [data,setdata]=useState({});
     const changeSearch=(e)=>{
         settxt(e.target.value);
@@ -37,9 +39,11 @@ export default function Dash() {
   return (
     <div>
         <div className='inps'>
-            <input id="search1" type='text' placeholder='Search any Movie...' value={txt} onChange={changeSearch}></input>
+            <input id="search1" type='text' autoComplete='off' placeholder='Search any Movie...' value={txt} onChange={changeSearch}></input>
             <button id="btn" onClick={sendData}>🔍 Search</button>
+            
         </div>
+        <button id="btn" onClick={()=>{nav("/watchlist")}}>Watchlist</button>
         <div className='movie'>
 
             {data.results ? 

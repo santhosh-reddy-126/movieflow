@@ -4,6 +4,7 @@ import Login from './screen/Login';
 import Home from './screen/Home';
 import Dash from './screen/Dash';
 import Specific from './screen/Specific';
+import WatchList from './screen/WatchList';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/home" element={<Dash />} />
         <Route exact path="/movie/:id" element={<Specific />} />
+        <Route exact path="/watchlist" element={<WatchList/>} />
       </Routes>
     </BrowserRouter>
   );

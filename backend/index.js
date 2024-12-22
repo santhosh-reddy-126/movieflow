@@ -3,6 +3,7 @@ import cors from "cors";
 import bcrypt from "bcryptjs";
 import { createClient } from "@supabase/supabase-js";
 import router from "./routes/uservalidation.js";
+import router2 from "./routes/two.js";
 
 const supabaseUrl = "https://ybnkyixugojfqjlssrvi.supabase.co";
 const supabaseKey =
@@ -33,6 +34,7 @@ app.use((req, res, next) => {
 
 
 app.use("/api/",router);
+app.use("/api/",router2);
 app.get("/", (req, res) => {
   res.send("<h1>Hello,I am Server</h1>");
 });

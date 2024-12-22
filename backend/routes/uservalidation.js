@@ -111,10 +111,12 @@ router.post("/getMovie", async(req,res)=>{
 router.post("/getSpecific", async(req,res)=>{
   try{
     let datas={};
-    const url = `https://api.themoviedb.org/3/movie/${req.body.id}?language=en-US`;
+    const url = `https://api.themoviedb.org/3/movie/${req.body.id}?append_to_response=release_dates%2Cwatch%2Fproviders&language=en-US`;
     const response = await fetch(url, options);
     datas = await response.json();
-    const {data,error} = await supabase.from("Ratings").select("*").eq("movie_id",req.body.id);
+    let {data,error} = await supabase.from("watchlists").select("*").eq("movie_id",req.body.id).eq("email",req.body.email);
+    let wlData = data;
+    ({ data, error } = await supabase.from("Ratings").select("*").eq("movie_id", req.body.id));
     let avg = 0,ans=-1;
     for(let i=0;i<data.length;i++){
       avg = avg + data[i].Rating;
@@ -131,7 +133,7 @@ router.post("/getSpecific", async(req,res)=>{
       status=ans;
     }
     if(Object.keys(datas).length != 0){
-      res.send({success: true,data: datas,status: status,avg: avg/data.length,length: data.length});
+      res.send({success: true,data: datas,status: status,avg: avg/data.length,length: data.length,wlData: wlData});
     }else{
       res.send({success: false,message: "Sorry,Unable to Find Your Movie"});
     }
@@ -159,4 +161,6 @@ router.post("/sendRating", async(req,res)=>{
     res.send({success: false});
   }
 })
+
+
 export default router;
